@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,7 +7,8 @@ module.exports = {
       [
         {
           level: 3,
-          description: "I feel great today, loving React Native and can't wait to build something cool with it!",
+          description:
+            "I feel great today, loving React Native and can't wait to build something cool with it!",
           needHelp: false,
           date: "2020-12-08",
           userId: 1,
@@ -17,7 +18,8 @@ module.exports = {
         },
         {
           level: 1,
-          description: "I feel really stressed today. I've been struggling with React Native all day, I just can't get it to work!",
+          description:
+            "I feel really stressed today. I've been struggling with React Native all day, I just can't get it to work!",
           needHelp: true,
           date: "2020-12-08",
           userId: 2,
@@ -27,7 +29,8 @@ module.exports = {
         },
         {
           level: 2,
-          description: "I'm feeling alright. React Native seems cool so far, I guess I just need to keep practising it more.",
+          description:
+            "I'm feeling alright. React Native seems cool so far, I guess I just need to keep practising it more.",
           needHelp: false,
           date: "2020-12-08",
           userId: 3,
@@ -42,5 +45,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("userEmotions", null, {});
-  }
+  },
 };

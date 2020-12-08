@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class userEmotion extends Model {
     /**
@@ -13,15 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       userEmotion.hasOne(models.emotion);
       userEmotion.belongsTo(models.user);
     }
-  };
-  userEmotion.init({
-    level: DataTypes.INTEGER,
-    description: DataTypes.TEXT,
-    needHelp: DataTypes.BOOLEAN,
-    date: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'userEmotion',
-  });
+  }
+  userEmotion.init(
+    {
+      level: DataTypes.INTEGER,
+      description: DataTypes.TEXT,
+      needHelp: DataTypes.BOOLEAN,
+      date: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: "userEmotion",
+    }
+  );
   return userEmotion;
 };
