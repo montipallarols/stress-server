@@ -2,8 +2,21 @@ const { Router } = require("express");
 const authMiddleware = require("../auth/middleware");
 const Quote = require("../models").quote;
 const Emotion = require("../models").emotion;
+const userEmotion = require("../models").userEmotion
 
 const router = new Router();
+
+router.get("/", async (req, res, next) => {
+    try {
+      const userEmos = await userEmotion.findAll({
+        include: [Emotion],
+        order: [[Emotion, "createdAt", "DESC"]],
+      });
+      res.status(200).send({ message: "ok", userEmos });
+    } catch (error) {
+      next(error);
+    }
+  });
 
 // So you can find specific emotion 
 // with specific quote

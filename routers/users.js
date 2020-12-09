@@ -2,18 +2,18 @@ const { Router } = require("express");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
 const Reflection = require("../models").reflection;
-const Emotion = require("../models").userEmotion;
+const userEmotion = require("../models").userEmotion;
 
 const router = new Router();
 
 // So you can find all user emotions and all the users
 router.get("/", async (req, res, next) => {
   try {
-    const userEmotions = await Emotion.findAll({
+    const userEmos = await userEmotion.findAll({
       include: [User],
       order: [[User, "createdAt", "ASC"]],
     });
-    res.status(200).send({ message: "ok", userEmotions });
+    res.status(200).send({ message: "ok", userEmos });
   } catch (error) {
     next(error);
   }
@@ -44,8 +44,8 @@ router.get("/:id", async (req, res) => {
 // So you can create a user emotion
 router.post("/:id", async (req, res, next) => {
   try {
-    const userEmotions = await User.findByPk(req.params.id);
-    console.log(userEmotions);
+    const userEmos = await User.findByPk(req.params.id);
+    console.log(userEmos);
 
     const { level, description, needHelp, date } = req.body;
     if (!level || !needHelp || !date || !description) {
@@ -54,12 +54,12 @@ router.post("/:id", async (req, res, next) => {
         .send("Please make sure everything is filled in right.");
     }
 
-    const newEmotion = await Emotion.create({
+    const newEmotion = await userEmotion.create({
       level,
       description,
       needHelp,
       date,
-      userId: userEmotions.id,
+      userId: userEmos.id,
     });
 
     res
