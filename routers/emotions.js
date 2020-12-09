@@ -3,14 +3,15 @@ const authMiddleware = require("../auth/middleware");
 const Quote = require("../models").quote;
 const Emotion = require("../models").emotion;
 const userEmotion = require("../models").userEmotion
+const User = require("../models").user;
 
 const router = new Router();
 
 router.get("/", async (req, res, next) => {
     try {
       const userEmos = await userEmotion.findAll({
-        include: [Emotion],
-        order: [[Emotion, "createdAt", "DESC"]],
+        include: [User],
+        order: [[User, "createdAt", "DESC"]],
       });
       res.status(200).send({ message: "ok", userEmos });
     } catch (error) {
