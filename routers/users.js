@@ -44,8 +44,8 @@ router.get("/:id", async (req, res) => {
 // So you can create a user emotion
 router.post("/:id", async (req, res, next) => {
   try {
-    const userEmos = await User.findByPk(req.params.id);
-    console.log(userEmos);
+    const userId = parseInt(req.params.userId);
+
 
     const { level, description, needHelp, date } = req.body;
     if (!level || !needHelp || !date || !description) {
@@ -59,7 +59,7 @@ router.post("/:id", async (req, res, next) => {
       description,
       needHelp,
       date,
-      userId: userEmos.id,
+      userId,
     });
 
     res
