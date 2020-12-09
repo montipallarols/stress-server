@@ -70,4 +70,26 @@ router.post("/:id", async (req, res, next) => {
   }
 });
 
+// To create a new reflection
+router.post("/reflections/:userId", authMiddleware, async (req, res, next) => {
+  const userId = parseInt(req.params.userId);
+  const { date, problem, solution, score } = req.body;
+  if (!date || !problem || !solution || !score ) {
+    return res.status(400).send("There is some missing info!");
+  }
+  try {
+    const newReflection = await Reflection.create({
+      date,
+      problem,
+      solution,
+      score,
+      userId
+    })
+    res.json(newReflection)
+  } catch(e) {
+    console.log("What is the ERROR?", e)
+    next(e);
+  }
+}) 
+
 module.exports = router;
