@@ -18,10 +18,10 @@ module.exports = {
         key: "id",
       },
     });
-    await queryInterface.addColumn("userEmotions", "emotionId", {
+    await queryInterface.addColumn("emotions", "userEmotionId", {
       type: Sequelize.INTEGER,
       references: {
-        model: "emotions",
+        model: "userEmotions",
         key: "id",
       },
     });
@@ -37,7 +37,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn("reflections", "userId"),
       await queryInterface.removeColumn("userEmotions", "userId"),
-      await queryInterface.removeColumn("userEmotions", "emotionId"),
+      await queryInterface.removeColumn("emotions", "userEmotionId"),
       await queryInterface.removeColumn("quotes", "emotionId");
   },
 };
