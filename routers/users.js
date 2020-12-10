@@ -42,14 +42,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // So you can create a user emotion
-router.post("/:userId", authMiddleware, async (req, res, next) => {
+router.post("/:userId", async (req, res, next) => {
   try {
     const currentDate = new Date().toLocaleDateString("en-GB")
     let date = currentDate.split("/").reverse().join("-");
     const userId = parseInt(req.params.userId)
     const userEmos = await User.findByPk(userId, {attributes: ["id", "firstName", "lastName", "email", "phone"]});
     console.log(userEmos);
-    
 
     const { level, description, needHelp } = req.body;
     console.log("NEED HELP?", needHelp, typeof(needHelp))
