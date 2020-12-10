@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       userEmotion.hasOne(models.emotion);
       userEmotion.belongsTo(models.user);
+      userEmotion.hasMany(models.comment);
     }
   }
   userEmotion.init(
