@@ -41,5 +41,16 @@ router.get("/:id", async (req, res) => {
     res.status(200).send({ message: "ok", emotion });
   });
 
+  // To get all quotes by id
+  router.get("/:emotionId/quotes", async (req, res, next) => {
+    try {
+      const emotionId = parseInt(req.params.emotionId)
+      const quotes = await Quote.findAll({ where: { emotionId: emotionId } });
+      res.status(200).send({ message: "ok", quotes });
+    } catch (error) {
+      next(error);
+    }
+  });
+
 
 module.exports = router;
