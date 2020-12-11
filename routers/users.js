@@ -3,6 +3,7 @@ const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
 const Reflection = require("../models").reflection;
 const userEmotion = require("../models").userEmotion;
+const Comment = require("../models").comment;
 
 const router = new Router();
 
@@ -21,6 +22,41 @@ router.get("/", async (req, res, next) => {
 
 // So you can search for a user by id
 //with the reflections of that user
+
+router.post(
+  "/comments/:userEmotionId",
+  authMiddleware,
+  async (req, res, next) => {
+    const { content } = req.body;
+    const userEmotionId = req.params.userEmotionId;
+    const userId = req.user.id;
+    try {
+      console.log("do i get", req.body);
+      const newComment = await Comment.create({
+        content,
+        userId,
+        date: new Date(),
+        userEmotionId,
+      });
+      const userEmos = await userEmotion.findAll({
+        include: [
+          {
+            model: User,
+          },
+          {
+            model: Comment,
+          },
+        ],
+        // order: [[User, "createdAt", "DESC"]],
+      });
+      res.status(200).send({ message: "ok", userEmos });
+    } catch (error) {
+      console.log("Error", error);
+      next(error);
+    }
+  }
+);
+
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -44,15 +80,17 @@ router.get("/:id", async (req, res) => {
 // So you can create a user emotion
 router.post("/:userId", async (req, res, next) => {
   try {
-    const currentDate = new Date().toLocaleDateString("en-GB")
+    const currentDate = new Date().toLocaleDateString("en-GB");
     let date = currentDate.split("/").reverse().join("-");
-    const userId = parseInt(req.params.userId)
-    const userEmos = await User.findByPk(userId, {attributes: ["id", "firstName", "lastName", "email", "phone"]});
+    const userId = parseInt(req.params.userId);
+    const userEmos = await User.findByPk(userId, {
+      attributes: ["id", "firstName", "lastName", "email", "phone"],
+    });
     console.log(userEmos);
 
     const { level, description, needHelp } = req.body;
-    console.log("NEED HELP?", needHelp, typeof(needHelp))
-    if (!level || !description ) {
+    console.log("NEED HELP?", needHelp, typeof needHelp);
+    if (!level || !description) {
       return res
         .status(400)
         .send("Please make sure everything is filled in right.");
@@ -61,9 +99,9 @@ router.post("/:userId", async (req, res, next) => {
     const newEmotion = await userEmotion.create({
       level,
       description,
-      needHelp: typeof(needHelp) === "boolean" ? needHelp : false,
+      needHelp: typeof needHelp === "boolean" ? needHelp : false,
       userId,
-      date
+      date,
     });
 
     res
@@ -78,7 +116,7 @@ router.post("/:userId", async (req, res, next) => {
 router.post("/reflections/:userId", authMiddleware, async (req, res, next) => {
   const userId = parseInt(req.params.userId);
   const { date, problem, solution, score } = req.body;
-  if (!date || !problem || !solution || !score ) {
+  if (!date || !problem || !solution || !score) {
     return res.status(400).send("There is some missing info!");
   }
   try {
@@ -87,13 +125,13 @@ router.post("/reflections/:userId", authMiddleware, async (req, res, next) => {
       problem,
       solution,
       score,
-      userId
-    })
-    res.json(newReflection)
-  } catch(e) {
-    console.log("What is the ERROR?", e)
+      userId,
+    });
+    res.json(newReflection);
+  } catch (e) {
+    console.log("What is the ERROR?", e);
     next(e);
   }
-}) 
+});
 
 module.exports = router;
