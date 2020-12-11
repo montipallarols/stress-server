@@ -23,6 +23,15 @@ router.get("/", async (req, res, next) => {
 // So you can search for a user by id
 //with the reflections of that user
 
+router.get("/all", authMiddleware, async (req, res, next) => {
+  try {
+    const allUsers = await User.findAll();
+    res.status(200).send({ message: "ok", allUsers });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post(
   "/comments/:userEmotionId",
   authMiddleware,
