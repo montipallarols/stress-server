@@ -2,7 +2,8 @@
   "development": {
     "url": "postgres://rmauilxr:iEwLADkF5_lt4ojKe0TC0jI7_ccM2CsB@hattie.db.elephantsql.com:5432/rmauilxr",
     "dialect": "postgres",
-    "operatorsAliases": 0
+    "operatorsAliases": 0,
+    "logging": false
   },
   "test": {
     "username": "root",
