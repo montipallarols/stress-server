@@ -38,7 +38,18 @@ router.post(
         date: new Date(),
         userEmotionId,
       });
-      res.json(newComment);
+      const userEmos = await userEmotion.findAll({
+        include: [
+          {
+            model: User,
+          },
+          {
+            model: Comment,
+          },
+        ],
+        // order: [[User, "createdAt", "DESC"]],
+      });
+      res.status(200).send({ message: "ok", userEmos });
     } catch (error) {
       console.log("Error", error);
       next(error);
